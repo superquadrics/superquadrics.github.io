@@ -44,8 +44,16 @@
     }
     .sq-equation {
       min-height: 7.5rem;
-      overflow-x: auto;
     }
+    .sq-deform {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem 1.5rem;
+    }
+    .sq-deform-eq { min-width: 0; max-width: 100%; }
+    .sq-deform-fig { width: 100%; max-width: 380px; height: auto; }
     .sq-description {
       min-height: 3rem;
     }
@@ -135,6 +143,10 @@
     .select select:focus, .select select:active { border-color: var(--green); box-shadow: 0 0 0 0.125em rgba(22, 163, 74, 0.25); }
     input[type=checkbox] { accent-color: var(--green); }
     /* "How it works" diagram of the reactive grasping (inline SVG) */
+    .sq-rbc { margin: 0.5rem 0 1.5rem; }
+    .sq-rbc img { display: block; width: 100%; height: auto; }
+    .sq-rbc img + img { margin-top: 0.5rem; }
+    .sq-rbc figcaption { margin-top: 0.5rem; text-align: justify; }
     .sq-diagram svg { display: block; width: 100%; height: auto; font-family: inherit; }
     .sq-diagram .sq-d-box { fill: #f4faf5; stroke: #16a34a; stroke-width: 1.2; }
     .sq-diagram .sq-d-physics { fill: #e6f4ea; }
@@ -308,22 +320,64 @@
         <h2 class="title is-3">What's This Website?</h2>
         <div class="content has-text-justified">
           <p>
-            In progress
-            <!-- An interactive tour of <b>superquadric-type primitives</b>, a compact shape representation for robot
-            manipulation: a handful of parameters describe an object's shape, and grasps follow from them analytically.
-            Everything runs in your browser; drag the sliders, rotate the views, and start the simulations.
+            Manipulating objects based on visual observations remains a central challenge in robotics. Despite remarkable
+            advances in computer vision, particularly in 3D reconstruction, two closely intertwined questions have long
+            guided my research: <b>Do robots really need explicit 3D representations to manipulate objects</b>, and <b>what makes a 3D
+            representation useful for manipulation?</b>
+          </p>
+          <p>
+            One source of inspiration for exploring these questions is Biederman's <b style="color: #16a34a;">recognition-by-components theory</b> (1987),
+            which explains human object recognition in terms of simple volumetric primitives and their spatial
+            relationships. Drawing on this perspective, I investigate how structured geometric representations can support
+            robotic manipulation, with a particular focus on <b style="color: #16a34a;">superquadrics</b> as compact and interpretable building blocks for
+            representing objects.
+          </p>
+        </div>
+        <figure class="sq-rbc">
+          <img src="assets/figs/rbc_drawing.png" alt="Line drawings of nine objects composed of simple volumetric components (Biederman, 1987)">
+          <img src="assets/figs/rbc_objects.gif" alt="The nine objects reconstructed with superquadric primitives, seen from slowly circling cameras">
+          <figcaption class="is-size-7 has-text-grey">
+            <b>From components to superquadrics.</b> Top: nine objects drawn as arrangements of simple volumetric components (Biederman, 1987).
+            Bottom: the same objects built from superquadric primitives, each primitive in a different shade of green.
+          </figcaption>
+        </figure>
+        <div class="content has-text-justified">
+          <p>
+            This website brings together the ideas and examples behind my interest in superquadrics as a <b style="color: #16a34a;">representation for
+            robotic object manipulation</b>. I believe this shape family offers a compelling combination of <b>compactness,
+            interpretability, and geometric structure</b>, especially when extended through deformations and toroidal forms. My
+            goal is to make these strengths tangible: to show how superquadric representations can make grasp pose
+            generation, distance-based collision checking, and the creation of object assets for simulation, 
+            while encouraging others to explore their potential.
+          </p>
+          <p>
+            The website provides an interactive tour of superquadric geometry and its applications to manipulation.
+            Everything runs in your browser: adjust shape parameters, rotate views, and run simulations to
+            explore how an object's geometry influences the ways a robot can interact with it.
           </p>
           <ul>
-            <li><b><a href="#superquadric-primitives">Superquadric Primitives</a></b> : the four primitive families
-              (superellipsoids, deformable superellipsoids, superbowls, supertoroids) and how their parameters shape them.</li>
-            <li><b><a href="#composite-objects">Composite Objects</a></b> : everyday objects of DSQNet, TablewareNet and custom
-              sets, each built from a few posed primitives.</li>
-            <li><b><a href="#primitive-grasps">Primitive Grasps</a></b> and <b><a href="#object-grasps">Object Grasps</a></b> :
-              grasp poses computed directly from the primitive parameters, checked for width, friction and collision,
-              for three different grippers.</li>
-            <li><b><a href="#grasp-simulation">Grasp Simulation</a></b> and <b><a href="#reactive-grasping">Reactive Grasping</a></b> :
-              a Franka FR3 in MuJoCo grasping these objects, by a planned motion or reactively while you move the object.</li> -->
+            <li><b style="color: #16a34a;">Superquadric Primitives and Composite Objects:</b> Explore four shape primitive families (superellipsoids,
+              deformable superellipsoids, superbowls, and supertoroids) and composite objects from the DSQNet and TablewareNet
+              datasets and from custom collections, each built from a few primitives.</li>
+            <li><b style="color: #16a34a;">Grasp Pose Generation:</b> Generate antipodal grasp poses for three different grippers directly from
+              primitive parameters, then filter them by gripper opening width, surface-normal alignment at the contact
+              points, and collisions.</li>
+            <li><b style="color: #16a34a;">Grasp Simulation:</b> Watch a Franka FR3 grasp objects in MuJoCo, either along planned motions or
+              reactively as you move them.</li>
           </ul>
+          <!-- References. -->
+          <p style="font-size: 0.9rem; margin-top: 1.5rem; margin-bottom: 0.25rem;"><b>References</b></p>
+          <ul style="font-size: 0.9rem; margin-top: 0; margin-left: 0; list-style: none;">
+            <li>Biederman, I. (1987). Recognition-by-components: A theory of human image understanding.
+              <i>Psychological Review</i>, 94(2), 115.</li>
+            <li>Kim, S., et al. (2022). DSQNet: A deformable model-based supervised learning algorithm for grasping
+              unknown occluded objects. <i>IEEE Transactions on Automation Science and Engineering</i>, 20(3), 1721&ndash;1734.</li>
+            <li>Kim, Y., et al. (2024). T<sup>2</sup>SQNet: A recognition model for manipulating partially observed
+              transparent tableware objects. <i>Conference on Robot Learning (CoRL)</i>.</li>
+          </ul>
+          <p class="is-size-7 has-text-grey-light has-text-right" style="margin-top: 1rem;">
+            This website was built with the help of Claude Opus 5.5.
+          </p>
         </div>
       </div>
     </div>
@@ -334,7 +388,7 @@
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
-      <div class="column">
+      <div class="column" style="min-width: 0;">
         <h2 class="title is-3">Superquadric Primitives</h2>
         <div class="content has-text-justified">
           <p>
@@ -838,16 +892,11 @@
         out[2] = spow(se, 2 - p.e1) / p.a3;
       },
       presets: [
-        ['Sphere',                             { a1: 0.5, a2: 0.5, a3: 0.5, e1: 1.0, e2: 1.0 }],
-        ['Cube',                               { a1: 0.5, a2: 0.5, a3: 0.5, e1: 0.1, e2: 0.1 }],
-        ['Cylinder',                           { a1: 0.5, a2: 0.5, a3: 0.5, e1: 0.1, e2: 1.0 }],
-        ['Square cross-section, round sides',  { a1: 0.5, a2: 0.5, a3: 0.5, e1: 1.0, e2: 0.1 }],
-        ['Octahedron',                         { a1: 0.5, a2: 0.5, a3: 0.5, e1: 2.0, e2: 2.0 }],
-        ['Pinched',                            { a1: 0.5, a2: 0.5, a3: 0.5, e1: 1.5, e2: 0.5 }],
-        ['Rounded box',                        { a1: 0.7, a2: 0.4, a3: 0.3, e1: 0.5, e2: 0.5 }],
-        ['Tall cylinder',                      { a1: 0.3, a2: 0.3, a3: 0.8, e1: 0.2, e2: 1.0 }],
-        ['Disk',                               { a1: 0.8, a2: 0.8, a3: 0.15, e1: 0.2, e2: 1.0 }],
-        ['Elongated pillow',                   { a1: 0.6, a2: 0.3, a3: 0.4, e1: 1.0, e2: 0.3 }],
+        ['Sphere',     { a1: 0.5, a2: 0.5, a3: 0.5, e1: 1.0, e2: 1.0 }],
+        ['Ellipsoid',  { a1: 0.6, a2: 0.4, a3: 0.3, e1: 1.0, e2: 1.0 }],
+        ['Cube',       { a1: 0.5, a2: 0.5, a3: 0.5, e1: 0.1, e2: 0.1 }],
+        ['Cylinder',   { a1: 0.5, a2: 0.5, a3: 0.5, e1: 0.1, e2: 1.0 }],
+        ['Octahedron', { a1: 0.5, a2: 0.5, a3: 0.5, e1: 2.0, e2: 2.0 }],
       ],
     },
 
@@ -857,20 +906,83 @@
       etaRange: [-Math.PI / 2, Math.PI / 2],
       params: [
         ...scale(), ...shape(),
-        { key: 'k',     label: 'k', min: -1, max: 1, step: 0.01, group: 'Deformation' },
+        { key: 'kx',    label: 'k<sub>x</sub>', min: -1, max: 1, step: 0.01, group: 'Deformation' },
+        { key: 'ky',    label: 'k<sub>y</sub>', min: -1, max: 1, step: 0.01, group: 'Deformation' },
         { key: 'b',     label: 'b', min: 0, max: 2, step: 0.01, group: 'Deformation' },
         { key: 'alpha', label: 'α (°)', min: 0, max: 360, step: 1, digits: 0, group: 'Deformation' },
         { key: 's',     label: 's', min: -1, max: 1, step: 0.01, group: 'Deformation' },
       ],
       equation: String.raw`
-        <p>A superellipsoid deformed by tapering \(k\), bending with curvature \(b\) in direction \(\alpha\),
-        and shearing \(s\). Each point \((x, y, z)\) of the superellipsoid is mapped by</p>
-        \[ \text{tapering:}\ \ (x, y) \leftarrow \left(\tfrac{k}{a_3} z + 1\right)(x, y), \qquad
-           \text{shearing:}\ \ z \leftarrow z + s\,x, \]
-        \[ \text{bending:}\ \ \gamma = b z,\ \ r = x \cos\alpha + y \sin\alpha,\ \
-           R = \tfrac{1}{b} - \cos\gamma \left(\tfrac{1}{b} - r\right),\ \
-           (x, y) \leftarrow (x, y) + (R - r)(\cos\alpha, \sin\alpha),\ \
-           z \leftarrow \sin\gamma \left(\tfrac{1}{b} - r\right). \]`,
+        <p>A superellipsoid deformed by tapering \(k_x, k_y\), bending with curvature \(b\) in direction \(\alpha\),
+        and shearing \(s\). Each point \((x, y, z)\) of the superellipsoid is mapped, in this order, by</p>
+        <div class="sq-deform">
+          <div class="sq-deform-eq">
+            \[ \begin{aligned}
+              &\text{tapering:} && \bbox[3px, border: 1.5px solid #d9594d]{(x, y) \leftarrow \left(\left(\tfrac{k_x}{a_3} z + 1\right) x,\ \left(\tfrac{k_y}{a_3} z + 1\right) y\right)}, \\[4pt]
+              &\text{bending:}  && \gamma = b z, \\
+              &                 && r = x \cos\alpha + y \sin\alpha, \\
+              &                 && R = \tfrac{1}{b} - \cos\gamma \left(\tfrac{1}{b} - r\right), \\
+              &                 && \bbox[3px, border: 1.5px solid #d9594d]{(x, y) \leftarrow (x, y) + (R - r)(\cos\alpha, \sin\alpha)}, \\
+              &                 && \bbox[3px, border: 1.5px solid #d9594d]{z \leftarrow \sin\gamma \left(\tfrac{1}{b} - r\right)}, \\[4pt]
+              &\text{shearing:} && \bbox[3px, border: 1.5px solid #d9594d]{z \leftarrow z + s\,x}.
+            \end{aligned} \]
+          </div>
+          <svg class="sq-deform-fig" viewBox="0 0 480 190" role="img"
+               aria-label="Side views (x horizontal, z vertical) of a box before and after tapering, bending and shearing">
+            <defs>
+              <marker id="sq-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" fill="#d9594d"/>
+              </marker>
+              <marker id="sq-axis-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                <path d="M0 0 L10 5 L0 10 z" fill="#888"/>
+              </marker>
+              <g id="sq-axes">
+                <g fill="none" stroke="#888" stroke-width="1.2" marker-end="url(#sq-axis-arrow)">
+                  <path d="M10 152 H30"/>
+                  <path d="M10 152 V132"/>
+                </g>
+                <text x="33" y="156" font-size="11" font-style="italic" fill="#888">x</text>
+                <text x="7" y="127" font-size="11" font-style="italic" fill="#888">z</text>
+              </g>
+            </defs>
+            <!-- x-z axes in the lower-left corner of each panel, clear of the shapes and arrows -->
+            <use href="#sq-axes"/>
+            <use href="#sq-axes" transform="translate(160 0)"/>
+            <use href="#sq-axes" transform="translate(320 0)"/>
+            <g fill="none" stroke="#d9594d" stroke-width="2" marker-end="url(#sq-arrow)">
+              <!-- tapering: the top widens -->
+              <path d="M66 18 H40"/>
+              <path d="M94 18 H120"/>
+              <!-- bending: both ends swing toward +x -->
+              <path d="M255 26 Q272 30 274 50"/>
+              <path d="M255 144 Q272 140 274 120"/>
+              <!-- shearing: +x side moves up, -x side moves down -->
+              <path d="M437 100 V66"/>
+              <path d="M363 70 V104"/>
+            </g>
+            <g>
+              <rect x="55" y="30" width="50" height="110" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <polygon points="70,140 90,140 120,30 40,30" fill="rgba(115,191,102,0.35)" stroke="#16a34a" stroke-width="2"/>
+              <text x="80" y="176" font-size="14" text-anchor="middle" fill="#363636">tapering
+                <tspan font-style="italic">k<tspan font-size="10" dy="3">x</tspan></tspan><tspan dy="-3"> &gt; 0</tspan></text>
+            </g>
+            <g transform="translate(160 0)">
+              <rect x="37" y="30" width="50" height="110" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <polygon points="100.7,112.8 96.0,108.4 92.2,103.3 89.3,97.5 87.6,91.4 87.0,85.0 87.6,78.6 89.3,72.5 92.2,66.7 96.0,61.6 100.7,57.2 93.1,47.3 85.5,37.4 77.9,27.5 70.3,17.5 58.8,28.1 49.5,40.6 42.7,54.5 38.4,69.5 37.0,85.0 38.4,100.5 42.7,115.5 49.5,129.4 58.8,141.9 70.3,152.5 77.9,142.5 85.5,132.6 93.1,122.7"
+                       fill="rgba(115,191,102,0.35)" stroke="#16a34a" stroke-width="2" stroke-linejoin="round"/>
+              <polyline points="85.5,132.6 77.4,125.2 70.8,116.4 66.0,106.5 63.0,95.9 62.0,85.0 63.0,74.1 66.0,63.5 70.8,53.6 77.4,44.8 85.5,37.4"
+                        fill="none" stroke="#16a34a" stroke-width="1" stroke-dasharray="3 3"/>
+              <text x="80" y="176" font-size="14" text-anchor="middle" fill="#363636">bending
+                <tspan font-style="italic">b</tspan> &gt; 0, <tspan font-style="italic">α</tspan> = 0</text>
+            </g>
+            <g transform="translate(320 0)">
+              <rect x="55" y="30" width="50" height="110" fill="none" stroke="#999" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <polygon points="55,152.5 105,127.5 105,17.5 55,42.5" fill="rgba(115,191,102,0.35)" stroke="#16a34a" stroke-width="2"/>
+              <text x="80" y="176" font-size="14" text-anchor="middle" fill="#363636">shearing
+                <tspan font-style="italic">s</tspan> &gt; 0</text>
+            </g>
+          </svg>
+        </div>`,
       point(p, ce, se, co, so, out) {
         const pe = spow(ce, p.e1);
         let x = p.a1 * pe * spow(co, p.e2);
@@ -878,9 +990,8 @@
         let z = p.a3 * spow(se, p.e1);
 
         // tapering
-        const f = p.k / p.a3 * z + 1;
-        x *= f;
-        y *= f;
+        x *= p.kx / p.a3 * z + 1;
+        y *= p.ky / p.a3 * z + 1;
 
         // bending
         const b = Math.max(p.b, B0);
@@ -899,16 +1010,11 @@
         out[0] = x; out[1] = y; out[2] = z;
       },
       presets: [
-        ['Plain',                   { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 1.0, e2: 1.0, k: 0.0,  b: 0.0, alpha: 0,   s: 0.0 }],
-        ['Tapered',                 { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 1.0, e2: 1.0, k: 0.6,  b: 0.0, alpha: 0,   s: 0.0 }],
-        ['Inverse tapered cylinder',{ a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.2, e2: 1.0, k: -0.6, b: 0.0, alpha: 0,   s: 0.0 }],
-        ['Bent',                    { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.3, e2: 1.0, k: 0.0,  b: 1.0, alpha: 0,   s: 0.0 }],
-        ['Bent along y',            { a1: 0.2,  a2: 0.2,  a3: 0.8, e1: 0.5, e2: 1.0, k: 0.0,  b: 1.5, alpha: 90,  s: 0.0 }],
-        ['Sheared box',             { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.3, e2: 0.3, k: 0.0,  b: 0.0, alpha: 0,   s: 0.5 }],
-        ['Tapered + bent box',      { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.2, e2: 0.2, k: 0.5,  b: 0.8, alpha: 0,   s: 0.0 }],
-        ['Horn',                    { a1: 0.15, a2: 0.15, a3: 0.8, e1: 0.5, e2: 1.0, k: 0.0,  b: 1.2, alpha: 45,  s: 0.0 }],
-        ['All deformations',        { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 1.0, e2: 1.0, k: 0.4,  b: 0.6, alpha: 0,   s: 0.3 }],
-        ['Flat bent',               { a1: 0.4,  a2: 0.2,  a3: 0.6, e1: 0.3, e2: 0.5, k: -0.3, b: 1.0, alpha: 180, s: 0.0 }],
+        ['Tapered cylinder',               { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.2, e2: 1.0, kx: -0.5, ky: -0.5, b: 0.0, alpha: 0, s: 0.0 }],
+        ['Handle (bent)',                  { a1: 0.08, a2: 0.08, a3: 0.6, e1: 0.3, e2: 1.0, kx: 0.0,  ky: 0.0,  b: 2.0, alpha: 0, s: 0.0 }],
+        ['Water drop (tapered ellipsoid)', { a1: 0.35, a2: 0.35, a3: 0.5, e1: 1.0, e2: 1.0, kx: -0.9, ky: -0.9, b: 0.0, alpha: 0, s: 0.0 }],
+        ['Sheared box',                    { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.3, e2: 0.3, kx: 0.0,  ky: 0.0,  b: 0.0, alpha: 0, s: 0.5 }],
+        ['Mixed (taper + bend + shear)',   { a1: 0.3,  a2: 0.3,  a3: 0.7, e1: 0.3, e2: 0.3, kx: -0.4, ky: -0.4, b: 0.8, alpha: 0, s: 0.3 }],
       ],
     },
 
@@ -918,13 +1024,14 @@
       etaRange: [-Math.PI / 2, Math.PI / 2],
       params: [
         ...scale(), ...shape(2.0),
-        { key: 'k',   label: 'k', min: -1, max: 1, step: 0.01, group: 'Bowl' },
+        { key: 'kx',  label: 'k<sub>x</sub>', min: -1, max: 1, step: 0.01, group: 'Bowl' },
+        { key: 'ky',  label: 'k<sub>y</sub>', min: -1, max: 1, step: 0.01, group: 'Bowl' },
         { key: 'lam', label: 'λ', min: 0, max: 1, step: 0.01, group: 'Bowl' },
       ],
       equation: String.raw`
         <p>A superbowl interpolates from the superellipsoid (\(\lambda = 0\)) to a bowl (\(\lambda = 1\))
         with wall thickness \(\tau\) and thickness profile \(\nu\), fixed here to \(\tau = ${BOWL_TAU}\)
-        and \(\nu = ${BOWL_NU}\), and is then tapered by \((x, y) \leftarrow \left(\tfrac{k}{a_3} z + 1\right)(x, y)\):</p>
+        and \(\nu = ${BOWL_NU}\), and is then tapered by \((x, y) \leftarrow \left(\left(\tfrac{k_x}{a_3} z + 1\right) x,\ \left(\tfrac{k_y}{a_3} z + 1\right) y\right)\):</p>
         \[ A + \left| \frac{z/a_3 + \lambda (1 - A)}{c_\lambda} \right|^{\nu_\lambda} = 1, \qquad
            A = ${TEX_A}^{\frac{\epsilon_2}{\epsilon_1}}, \]
         \[ c_\lambda = (1 - \lambda) + \lambda\, \tau^{1 - 1/\nu}, \qquad
@@ -937,21 +1044,16 @@
         const z = p.a3 * (c * se - p.lam * (1 - A));
 
         // tapering
-        const f = p.k / p.a3 * z + 1;
-        out[0] = f * p.a1 * rho * spow(co, p.e2);
-        out[1] = f * p.a2 * rho * spow(so, p.e2);
+        out[0] = (p.kx / p.a3 * z + 1) * p.a1 * rho * spow(co, p.e2);
+        out[1] = (p.ky / p.a3 * z + 1) * p.a2 * rho * spow(so, p.e2);
         out[2] = z;
       },
       presets: [
-        ['Soup bowl',              { a1: 0.5,  a2: 0.5,  a3: 0.4,  e1: 1.0, e2: 1.0, k: 0.0, lam: 1.0 }],
-        ['Plate',                  { a1: 0.6,  a2: 0.6,  a3: 0.25, e1: 0.3, e2: 1.0, k: 0.0, lam: 1.0 }],
-        ['Deep bowl',              { a1: 0.5,  a2: 0.5,  a3: 0.6,  e1: 0.5, e2: 1.0, k: 0.0, lam: 1.0 }],
-        ['Square dish',            { a1: 0.5,  a2: 0.5,  a3: 0.3,  e1: 0.3, e2: 0.3, k: 0.0, lam: 1.0 }],
-        ['Oval dish',              { a1: 0.6,  a2: 0.4,  a3: 0.3,  e1: 0.5, e2: 1.0, k: 0.0, lam: 1.0 }],
-        ['Flat-bottomed bowl',     { a1: 0.5,  a2: 0.5,  a3: 0.4,  e1: 0.5, e2: 1.0, k: 0.0, lam: 1.0 }],
-        ['Tapered cup',            { a1: 0.35, a2: 0.35, a3: 0.7,  e1: 0.2, e2: 1.0, k: 0.3, lam: 1.0 }],
-        ['λ = 0.5',                { a1: 0.5,  a2: 0.5,  a3: 0.4,  e1: 1.0, e2: 1.0, k: 0.0, lam: 0.5 }],
-        ['λ = 0.8',                { a1: 0.5,  a2: 0.5,  a3: 0.4,  e1: 1.0, e2: 1.0, k: 0.0, lam: 0.8 }],
+        ['Soup bowl',              { a1: 0.5,  a2: 0.5,  a3: 0.4,  e1: 1.0, e2: 1.0, kx: 0.0, ky: 0.0, lam: 1.0 }],
+        ['Plate',                  { a1: 0.6,  a2: 0.6,  a3: 0.25, e1: 0.3, e2: 1.0, kx: 0.0, ky: 0.0, lam: 1.0 }],
+        ['Deep bowl',              { a1: 0.5,  a2: 0.5,  a3: 0.6,  e1: 0.5, e2: 1.0, kx: 0.0, ky: 0.0, lam: 1.0 }],
+        ['Square dish',            { a1: 0.5,  a2: 0.5,  a3: 0.3,  e1: 0.3, e2: 0.3, kx: 0.0, ky: 0.0, lam: 1.0 }],
+        ['Oval dish',              { a1: 0.6,  a2: 0.4,  a3: 0.3,  e1: 0.5, e2: 1.0, kx: 0.0, ky: 0.0, lam: 1.0 }],
       ],
     },
 
@@ -985,13 +1087,8 @@
         ['Torus',                         { a1: 0.2,  a2: 0.2,  a3: 0.2,  a4: 2.0, e1: 1.0, e2: 1.0 }],
         ['Square tube',                   { a1: 0.2,  a2: 0.2,  a3: 0.2,  a4: 2.0, e1: 0.1, e2: 1.0 }],
         ['Square ring',                   { a1: 0.2,  a2: 0.2,  a3: 0.2,  a4: 2.0, e1: 1.0, e2: 0.1 }],
-        ['Square tube, square ring',      { a1: 0.2,  a2: 0.2,  a3: 0.2,  a4: 2.0, e1: 0.1, e2: 0.1 }],
-        ['Diamond tube',                  { a1: 0.2,  a2: 0.2,  a3: 0.2,  a4: 2.0, e1: 2.0, e2: 1.0 }],
         ['Tall tube',                     { a1: 0.15, a2: 0.15, a3: 0.3,  a4: 3.0, e1: 1.0, e2: 1.0 }],
         ['Flat tube',                     { a1: 0.2,  a2: 0.2,  a3: 0.1,  a4: 2.0, e1: 1.0, e2: 1.0 }],
-        ['Oval ring',                     { a1: 0.25, a2: 0.15, a3: 0.2,  a4: 2.0, e1: 1.0, e2: 1.0 }],
-        ['Thin ring',                     { a1: 0.1,  a2: 0.1,  a3: 0.1,  a4: 5.0, e1: 1.0, e2: 1.0 }],
-        ['Small hole',                    { a1: 0.25, a2: 0.25, a3: 0.25, a4: 1.4, e1: 0.5, e2: 0.5 }],
       ],
     },
   };
@@ -1010,9 +1107,9 @@
 
   const B0_COMPOSITE = 1e-2;  // composites.utils.B0
   const cylinder = (r, h) => ({ a1: r, a2: r, a3: h / 2, e1: 0.1, e2: 1.0 });
-  const tapered = (a1, a2, a3, e1, e2, k) => ({ a1, a2, a3, e1, e2, k, b: B0_COMPOSITE, alpha: 0, s: 0 });
-  const bent = (r, a3, b, e2 = 1.0, s = 0) => ({ a1: r, a2: r, a3, e1: 0.2, e2, k: 0, b, alpha: 0, s });
-  const bowl = (a1, a2, a3, e1, e2, k) => ({ a1, a2, a3, e1, e2, k, lam: 1.0 });
+  const tapered = (a1, a2, a3, e1, e2, kx, ky = kx) => ({ a1, a2, a3, e1, e2, kx, ky, b: B0_COMPOSITE, alpha: 0, s: 0 });
+  const bent = (r, a3, b, e2 = 1.0, s = 0) => ({ a1: r, a2: r, a3, e1: 0.2, e2, kx: 0, ky: 0, b, alpha: 0, s });
+  const bowl = (a1, a2, a3, e1, e2, kx, ky = kx) => ({ a1, a2, a3, e1, e2, kx, ky, lam: 1.0 });
 
   const COMPOSITES = {
 
@@ -1227,7 +1324,7 @@
             return [
               { name: 'cup', type: 'superbowl', p: bowl(cup_radius, cup_radius, cup_height, cup_e1, 1.0, cup_k), t: [0, 0, cup_height] },
               { name: 'handle', type: 'deformable',
-                p: { a1: handle_width, a2: handle_width * handle_width_thickness_ratio, a3: handleA3, e1: 0.2, e2: handle_e2, k: 0, b, alpha: 0, s: handle_shear },
+                p: { a1: handle_width, a2: handle_width * handle_width_thickness_ratio, a3: handleA3, e1: 0.2, e2: handle_e2, kx: 0, ky: 0, b, alpha: 0, s: handle_shear },
                 R: R_Z180, t: [xHandle, 0, zHandle] },
             ];
           },
@@ -1350,7 +1447,7 @@
             const topUp = Math.sin(gamma) / stem_b;
             return [
               { name: 'stem', type: 'deformable',
-                p: { a1: stem_radius, a2: stem_radius, a3: stem_height / 2, e1: 0.3, e2: 1.0, k: stem_k, b: stem_b, alpha: stem_alpha / DEG, s: 0 },
+                p: { a1: stem_radius, a2: stem_radius, a3: stem_height / 2, e1: 0.3, e2: 1.0, kx: stem_k, ky: stem_k, b: stem_b, alpha: stem_alpha / DEG, s: 0 },
                 t: [0, 0, stem_height / 2] },
               { name: 'cap', type: 'superellipsoid', p: { a1: cap_radius, a2: cap_radius, a3: cap_height, e1: cap_e1, e2: 1.0 },
                 t: [topSide * Math.cos(stem_alpha), topSide * Math.sin(stem_alpha), stem_height / 2 + topUp + cap_height * 0.3] },
@@ -2001,11 +2098,24 @@
     return { z: frame.c[2] / a3, w: crossSectionWidth(a1, a2, e2, u[0]) };
   }
 
+  // DeformableSuperellipsoid.tapered_section_widths : width of the middle cross-section C tapered by
+  // F = diag(|kx z + 1|, |ky z + 1|) along the tapered closing direction d = F t / |F t|, 2 max_{q in C} (F d) . q
+  function taperedSectionWidth(p, uTheta, z) {
+    const { n, lookup } = crossSection(p.a1, p.a2, p.e2, uTheta);
+    const fx = Math.abs(p.kx * z + 1), fy = Math.abs(p.ky * z + 1);
+    let dx = -n[1] * fx, dy = n[0] * fy;
+    const l = Math.max(Math.hypot(dx, dy), 1e-12);
+    dx *= fx / l;
+    dy *= fy / l;
+    let max = -Infinity;
+    for (const q of lookup) max = Math.max(max, dx * q[0] + dy * q[1]);
+    return 2 * max;
+  }
+
   // DeformableSuperellipsoid.deform : tapering, bending and shearing (as the mesh)
   function deformPoint(p, [x, y, z]) {
-    const f = p.k / p.a3 * z + 1;
-    x *= f;
-    y *= f;
+    x *= p.kx / p.a3 * z + 1;
+    y *= p.ky / p.a3 * z + 1;
     const b = Math.max(p.b, B0);
     const alpha = p.alpha * DEG;
     const ca = Math.cos(alpha), sa = Math.sin(alpha);
@@ -2055,9 +2165,10 @@
     nu: (1 - lam) * 2 / e1 + lam * BOWL_NU,
   });
   function rimWallSlope(p, point, normal, ratio = 0.1) {
-    const g = z => Math.pow(1 + z / (p.lam * p.a3), p.e1 / 2) * (1 + p.k * z / p.a3);
+    const px = point[0] * normal[0], py = point[1] * normal[1];
+    const offset = z => Math.pow(1 + z / (p.lam * p.a3), p.e1 / 2) * (px * (1 + p.kx * z / p.a3) + py * (1 + p.ky * z / p.a3));
     const zRef = -ratio * p.lam * p.a3, dz = 1e-4 * p.a3;
-    return (point[0] * normal[0] + point[1] * normal[1]) * (g(zRef + dz) - g(zRef - dz)) / (2 * dz);
+    return (offset(zRef + dz) - offset(zRef - dz)) / (2 * dz);
   }
 
   // Supertoroid.tube_samples : ring point / normal, tube point q, outward tube normal m (radial, vertical) and lookup
@@ -2110,13 +2221,17 @@
         return tiltFrame(deformFrame(p, frame), tilt);
       },
       width(p, u) {
-        const { z, w } = superellipsoidContact(p.a1, p.a2, p.a3, p.e1, p.e2, u);
-        return w * profileScale(z, p.e1) * Math.abs(p.k * z + 1);
+        const { z } = superellipsoidContact(p.a1, p.a2, p.a3, p.e1, p.e2, u);
+        return taperedSectionWidth(p, u[0], z) * profileScale(z, p.e1);
       },
+      // half width l(z) = s(z) w(z) along the closing direction : tan = |s'(z) w(z) + s(z) w'(z)| / a3
       slope(p, u) {
-        const { z, w } = superellipsoidContact(p.a1, p.a2, p.a3, p.e1, p.e2, u);
+        const { z } = superellipsoidContact(p.a1, p.a2, p.a3, p.e1, p.e2, u);
+        const dz = 1e-6;
+        const w = taperedSectionWidth(p, u[0], z) / 2;
+        const dw = (taperedSectionWidth(p, u[0], z + dz) - taperedSectionWidth(p, u[0], z - dz)) / 4 / dz;
         const s = profileScale(z, p.e1), ds = -Math.sign(z) * profileSlope(z, p.e1);
-        return w / 2 / p.a3 * Math.abs(ds * (1 + p.k * z) + s * p.k);
+        return Math.abs(ds * w + s * dw) / p.a3;
       },
       grid: () => gridCoordinates(16, 5, 1),
     },
@@ -2240,17 +2355,15 @@
       X = X - ca * (R - r);
       Y = Y - sa * (R - r);
       Z = gamma / b;
-      const f = Math.abs(p.k / p.a3 * Z + 1);
-      return seRadial(X / f, Y / f, Z, p);
+      return seRadial(X / Math.abs(p.kx / p.a3 * Z + 1), Y / Math.abs(p.ky / p.a3 * Z + 1), Z, p);
     },
 
     // Superbowl.nearest_distance : smooth minimum (p-norm, p = 8) of the distances to closed-form surface points
     // (radial, vertical, horizontal, rim), signed by sgn(S - 1)
     superbowl(X0, Y0, Z, p) {
-      const { a1, a2, a3, e1, e2, k, lam } = p;
+      const { a1, a2, a3, e1, e2, kx, ky, lam } = p;
       const { c, nu } = bowlInterpolated(e1, lam);
-      const f = Math.abs(k / a3 * Z + 1);
-      const Xu = X0 / f, Yu = Y0 / f;
+      const Xu = X0 / Math.abs(kx / a3 * Z + 1), Yu = Y0 / Math.abs(ky / a3 * Z + 1);
       const A = Math.pow(Math.pow(Math.abs(Xu / a1), 2 / e2) + Math.pow(Math.abs(Yu / a2), 2 / e2), e2 / e1);
       const U = Z / a3 + lam * (1 - A);
       const S = Math.max(A + Math.pow(Math.abs(U / c), nu), 1e-12);
@@ -2259,8 +2372,7 @@
       const dists = [];
       const candidate = (scale, Zq, valid) => {
         if (!valid) return;
-        const fq = k / a3 * Zq + 1;
-        const dx = X0 - fq * scale * Xu, dy = Y0 - fq * scale * Yu, dz = Z - Zq;
+        const dx = X0 - (kx / a3 * Zq + 1) * scale * Xu, dy = Y0 - (ky / a3 * Zq + 1) * scale * Yu, dz = Z - Zq;
         dists.push(Math.sqrt(Math.max(dx * dx + dy * dy + dz * dz, 1e-24)));
       };
       // radial
@@ -2607,13 +2719,13 @@
     },
     deformable: {
       params: [len('a1', 'a<sub>1</sub>', 0.003, 0.15, 0.01), len('a2', 'a<sub>2</sub>', 0.003, 0.15, 0.01), len('a3', 'a<sub>3</sub>', 0.005, 0.15, 0.06),
-        num('e1', 'ε<sub>1</sub>', 0.1, 2.0, 0.2), num('e2', 'ε<sub>2</sub>', 0.1, 2.0, 1.0), num('k', 'k', -1, 1, 0),
+        num('e1', 'ε<sub>1</sub>', 0.1, 2.0, 0.2), num('e2', 'ε<sub>2</sub>', 0.1, 2.0, 1.0), num('kx', 'k<sub>x</sub>', -1, 1, 0), num('ky', 'k<sub>y</sub>', -1, 1, 0),
         num('b', 'b', 0.01, 40, 20), num('alpha', 'α (°)', -180, 180, 0, 1, 0), num('s', 's', -1, 1, 0), ...COORD_SE],
       description: 'The superellipsoid grasp of the same coordinates on the undeformed shape, mapped through the deformation D (tapering, bending, shearing): the grasp center c moves to D(c), the approach direction z to J<sup>−T</sup>z and the closing direction y to Jy (J : Jacobian of D at c), then the gripper is tilted about the closing line. Validity : width and friction cone with the tapering (μ = 0.05), and no collision.',
     },
     superbowl: {
       params: [len('a1', 'a<sub>1</sub>', 0.01, 0.15, 0.07), len('a2', 'a<sub>2</sub>', 0.01, 0.15, 0.07), len('a3', 'a<sub>3</sub>', 0.005, 0.15, 0.06),
-        num('e1', 'ε<sub>1</sub>', 0.05, 2.0, 0.3), num('e2', 'ε<sub>2</sub>', 0.1, 2.0, 1.0), num('k', 'k', -1, 1, 0.1), num('lam', 'λ', 0, 1, 1),
+        num('e1', 'ε<sub>1</sub>', 0.05, 2.0, 0.3), num('e2', 'ε<sub>2</sub>', 0.1, 2.0, 1.0), num('kx', 'k<sub>x</sub>', -1, 1, 0.1), num('ky', 'k<sub>y</sub>', -1, 1, 0.1), num('lam', 'λ', 0, 1, 1),
         coord('u_theta', 'u<sub>θ</sub>', 0.0), coord('u_tilt', 'u<sub>tilt</sub>', 0.5)],
       description: 'Rim grasps : u<sub>θ</sub> picks a point on the rim, the fingers close across the wall, and u<sub>tilt</sub> tilts the gripper about the closing line (0.5 : approach parallel to the wall at depth 0.1λa<sub>3</sub> below the rim, 0 / 1 : along the rim tangent). The grasp is valid if the wall thickness fits the gripper and the gripper does not collide with the bowl; shapes without a rim (λ &lt; 0.5) have no rim grasps.',
     },
@@ -3591,8 +3703,8 @@ ${pieces.map((_, i) => `      <geom type="mesh" mesh="object_${i}" group="3" con
   const SIM_PRIMITIVES = {
     cylinder: { name: 'Cylinder', type: 'superellipsoid', p: { a1: 0.03, a2: 0.03, a3: 0.06, e1: 0.1, e2: 1.0 } },
     box: { name: 'Box', type: 'superellipsoid', p: { a1: 0.025, a2: 0.04, a3: 0.05, e1: 0.1, e2: 0.1 } },
-    tapered: { name: 'Tapered cylinder', type: 'deformable', p: { a1: 0.024, a2: 0.024, a3: 0.06, e1: 0.2, e2: 1.0, k: 0.3, b: 0.01, alpha: 0, s: 0 } },
-    bowl: { name: 'Bowl', type: 'superbowl', p: { a1: 0.07, a2: 0.07, a3: 0.06, e1: 0.3, e2: 1.0, k: 0.1, lam: 1.0 } },
+    tapered: { name: 'Tapered cylinder', type: 'deformable', p: { a1: 0.024, a2: 0.024, a3: 0.06, e1: 0.2, e2: 1.0, kx: 0.3, ky: 0.3, b: 0.01, alpha: 0, s: 0 } },
+    bowl: { name: 'Bowl', type: 'superbowl', p: { a1: 0.07, a2: 0.07, a3: 0.06, e1: 0.3, e2: 1.0, kx: 0.1, ky: 0.1, lam: 1.0 } },
     torus: { name: 'Torus', type: 'supertoroid', p: { a1: 0.02, a2: 0.02, a3: 0.02, a4: 2.5, e1: 1.0, e2: 1.0 } },
   };
 
